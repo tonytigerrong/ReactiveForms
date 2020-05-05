@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl,FormBuilder,Validators } from '@angular/forms';
-import { UsernameValidator } from './Username.validations'
+import { UsernameValidator, PasswordconfirmValidator } from './RegistrationForm.validations'
 
 @Component({
   selector: 'app-root',
@@ -18,7 +18,7 @@ export class AppComponent {
       state: [''],
       postCode: ['']
     })
-  });
+  },{validator:PasswordconfirmValidator});
 
   constructor(private fb: FormBuilder){}
 
