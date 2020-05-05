@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl,FormBuilder,Validators } from '@angular/forms';
 import { UsernameValidator, PasswordconfirmValidator } from './RegistrationForm.validations'
 
@@ -7,23 +7,42 @@ import { UsernameValidator, PasswordconfirmValidator } from './RegistrationForm.
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass']
 })
-export class AppComponent {
+export class AppComponent implements OnInit  {
   title = 'reactive-forms';
-  registrationForm = this.fb.group({
-    userName: ['tony rong', [Validators.required, Validators.minLength(3), UsernameValidator(/tonyrong/)]],
-    password: [''],
-    confirmPassword: [''],
-    address: this.fb.group({
-      city: [''],
-      state: [''],
-      postCode: ['']
-    })
-  },{validator:PasswordconfirmValidator});
+  registrationForm: FormGroup;
 
   constructor(private fb: FormBuilder){}
+  ngOnInit(){
+    this.registrationForm = this.fb.group({
+      userName: ['tony rong', [Validators.required, Validators.minLength(3), UsernameValidator(/tonyrong/)]],
+      email:[''],
+      subscribe:[false],
+      password: [''],
+      confirmPassword: [''],
+      address: this.fb.group({
+        city: [''],
+        state: [''],
+        postCode: ['']
+      })
+    },{validator:PasswordconfirmValidator});
 
+    this.registrationForm.get("subscribe").valueChanges.subscribe(
+      value =>{
+        const  email = this.registrationForm.get("email");
+        if(value){
+          email.setValidators(Validators.required);
+        }else{
+          email.clearValidators();
+        }
+        email.updateValueAndValidity();
+      }
+    );
+  }
   get userName(){
     return this.registrationForm.get("userName");
+  }
+  get email(){
+    return this.registrationForm.get("email");
   }
 
   // registrationForm = new FormGroup({
