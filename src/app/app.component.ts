@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl,FormBuilder,Validators, FormArray } from '@angular/forms';
 import { UsernameValidator, PasswordconfirmValidator } from './RegistrationForm.validations'
+import { EnrollmentServiceService } from './enrollment-service.service'
 
 @Component({
   selector: 'app-root',
@@ -10,8 +11,8 @@ import { UsernameValidator, PasswordconfirmValidator } from './RegistrationForm.
 export class AppComponent implements OnInit  {
   title = 'reactive-forms';
   registrationForm: FormGroup;
-
-  constructor(private fb: FormBuilder){}
+  isSubmit = false;
+  constructor(private fb: FormBuilder,private _enroll: EnrollmentServiceService){}
   ngOnInit(){
     this.registrationForm = this.fb.group({
       userName: ['tony rong', [Validators.required, Validators.minLength(3), UsernameValidator(/tonyrong/)]],
@@ -64,9 +65,9 @@ export class AppComponent implements OnInit  {
   // });
 
   loadData(){
-    this.registrationForm.setValue({
-//  this.registrationForm.patchValue({
-      userName: "tony rong",
+    // this.registrationForm.setValue({
+ this.registrationForm.patchValue({
+      userName: "tony.tiger.rong",
       password: "1234",
       confirmPassword: "1234",
       address: {
@@ -75,5 +76,18 @@ export class AppComponent implements OnInit  {
         postCode: "B3B4T0"
       }
     });
+  }
+
+  onSubmit(userForm){
+    console.log("userForm:",userForm);
+    this._enroll.enrollment(userForm.value).subscribe(
+      data=>{
+        this.isSubmit = true;
+        console.log("Success:",data.message);
+      },
+      err=>{
+        console.log("Error:",err.status);
+      }
+    );
   }
 }

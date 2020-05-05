@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <h2>Registration Form</h2>
-  <form [formGroup]="registrationForm">
+  <form [formGroup]="registrationForm" #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
     <div class="form-group">
       <label>User Name</label>
       <input
@@ -17,7 +17,7 @@
       <small class="text-danger" *ngIf="email.errors?.required">email is required</small>
     </div>
     <div class="form-group">
-      <button (click)="addEmail()" class="btn btn-secondary btn-sm m-2">
+      <button (click)="addEmail()" class="btn btn-secondary btn-sm m-2" type="button">
         Add Mail
       </button>
     </div>
@@ -51,8 +51,12 @@
         <input formControlName="postCode" type="text" class="form-control">
       </div> 
     </div>
-    <button class="btn btn-primary" type="submit">Registray</button>
-    <button (click)="loadData()" class="btn btn-secondary ml-2">Load Data</button>
+    <button
+     class="btn btn-primary" type="submit" 
+     
+     [disabled]="isSubmit"
+     >Registray</button>
+    <button (click)="loadData()" class="btn btn-secondary ml-2" type="button">Load Data</button>
   </form>
     {{ registrationForm.value | json }}
 </div>
