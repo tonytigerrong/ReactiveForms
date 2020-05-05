@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl,FormBuilder,Validators } from '@angular/forms';
+import { FormGroup, FormControl,FormBuilder,Validators, FormArray } from '@angular/forms';
 import { UsernameValidator, PasswordconfirmValidator } from './RegistrationForm.validations'
 
 @Component({
@@ -16,6 +16,7 @@ export class AppComponent implements OnInit  {
     this.registrationForm = this.fb.group({
       userName: ['tony rong', [Validators.required, Validators.minLength(3), UsernameValidator(/tonyrong/)]],
       email:[''],
+      alternateEmails: this.fb.array([]),
       subscribe:[false],
       password: [''],
       confirmPassword: [''],
@@ -44,7 +45,13 @@ export class AppComponent implements OnInit  {
   get email(){
     return this.registrationForm.get("email");
   }
+  get alternativeEmails(){
+    return this.registrationForm.get("alternateEmails") as FormArray;
+  }
 
+  addEmail(){
+    this.alternativeEmails.push(this.fb.control(''));
+  }
   // registrationForm = new FormGroup({
   //   userName: new FormControl(''),
   //   password: new FormControl(''),
