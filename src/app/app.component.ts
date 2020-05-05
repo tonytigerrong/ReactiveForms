@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl,FormBuilder,Validators } from '@angular/forms';
+import { UsernameValidator } from './Username.validations'
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import { FormGroup, FormControl,FormBuilder,Validators } from '@angular/forms';
 export class AppComponent {
   title = 'reactive-forms';
   registrationForm = this.fb.group({
-    userName: ['tony rong', [Validators.required, Validators.minLength(3)]],
+    userName: ['tony rong', [Validators.required, Validators.minLength(3), UsernameValidator(/tonyrong/)]],
     password: [''],
     confirmPassword: [''],
     address: this.fb.group({
